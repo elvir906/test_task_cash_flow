@@ -11,5 +11,7 @@ def index(request):
         # 'title': title,
         'index': True,
     }
-    return render(request, 'fields/index.html', context)
+    return render(request, , context)
+    # return render(request, 'fields/index.html', context)
+
     
