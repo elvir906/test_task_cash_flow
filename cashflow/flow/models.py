@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import formats
 
 
 class Status(models.Model):
@@ -24,19 +25,6 @@ class Status(models.Model):
     return self.value
 
 
-class CustomStatus(models.Model):
-    value = models.CharField(
-    editable=True,
-    max_length=100,
-    unique=True,
-    null=False,
-    verbose_name='Наименование нового статуса'
-  )
-
-    def __str__(self) -> str:
-      return self.value
-
-
 class Field(models.Model):
   pub_date = models.DateField(
     auto_now_add=True,
@@ -56,6 +44,9 @@ class Field(models.Model):
       verbose_name = 'Запись ДДС'
       verbose_name_plural = 'Записи ДДС'
       ordering = ['pub_date']
+  
+  # def formatted_datetime(self):
+  #   return formats.date_format(self.pub_date, "d.M.Y")
 
   def __str__(self) -> str:
     return self.status.value
