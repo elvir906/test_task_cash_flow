@@ -1,3 +1,15 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404
 
-# Create your views here.
+from .models import Field, Status
+
+def index(request):
+    fields = Field.objects.all()
+    context = {
+        'fields': fields,
+        # 'title': title,
+        'index': True,
+    }
+    return render(request, 'fields/index.html', context)
+    
