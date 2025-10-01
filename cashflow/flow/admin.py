@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Field, Status
+from .models import Post, Status
 
 
-class FieldAdmin(admin.ModelAdmin):
+class PostAdmin(admin.ModelAdmin):
   list_display = ['pub_date', 'status']
 
 
@@ -10,5 +10,5 @@ class StatusAdmin(admin.ModelAdmin):
   list_display = ['value']
 
 
-admin.site.register(Field, FieldAdmin)
+admin.site.register(Post, PostAdmin)
 admin.site.register(Status, StatusAdmin)

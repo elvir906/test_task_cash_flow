@@ -1,5 +1,7 @@
+from django import template
 from django.db import models
-from django.utils import formats
+
+register = template.Library()
 
 
 class Status(models.Model):
@@ -14,39 +16,38 @@ class Status(models.Model):
     max_length=100,
     unique=True,
     null=False,
-    verbose_name='Наименование статуса'
+    verbose_name='Статус'
   )
 
   class Meta:
-      verbose_name = 'Статус'
-      verbose_name_plural = 'Статусы'
+    verbose_name = 'Статус'
+    verbose_name_plural = 'Статусы'
 
   def __str__(self) -> str:
     return self.value
 
 
-class Field(models.Model):
+class Post(models.Model):
   pub_date = models.DateField(
     auto_now_add=True,
     editable=True,
-    verbose_name='Дата публикации'
+    verbose_name='Дата создания записи'
   )
   status = models.ForeignKey(
     Status,
-    # related_name='statuses',
+    related_name='post_status',
     on_delete=models.CASCADE,
     null=False,
     editable=True,
-    verbose_name='Категория ДДС'
+    verbose_name='Статус'
   )
 
   class Meta:
-      verbose_name = 'Запись ДДС'
-      verbose_name_plural = 'Записи ДДС'
-      ordering = ['pub_date']
+    verbose_name = 'Запись о ДДС'
+    verbose_name_plural = 'Записи о ДДС'
+    ordering = ['pub_date']
   
-  # def formatted_datetime(self):
-  #   return formats.date_format(self.pub_date, "d.M.Y")
-
   def __str__(self) -> str:
+    print(self.pub_date.)
     return self.status.value
+  
