@@ -5,24 +5,28 @@
 {% load thumbnail %}
 {% load cache %}
 {% cache 20 index_page %}
-  
- 
+
+<table>
+  <tr style="background-color:darkgray">
+    <td>{{ pub_date_title }}</td>
+    <td>{{ status_title }}</td>
+    <td>{{ flow_type_title }}</td>
+    <td>{{ category_title }}</td>
+    <td>{{ subcategory_title }}</td>
+  </tr>
 
   {% for post in page_obj %} 
-      <tr>
-        <td>
-          {{ post.pub_date|date:"d.m.Y" }}
-        </td>
-      </tr>
-
-      <td>{% get_verbose_field_name post 'status' %}: <b>{{ post.status|linebreaksbr }}</b></td>
-     
-
-      {% if not forloop.last %}
-      <hr>
-      {% endif %}
+  <tr>
+    <td>{{ post.pub_date|date:"d.m.Y" }}</td>
+    <td>{{ post.status }}</td>
+    <td>{{ post.flow_type }}</td>
+    <td>{{ post.category }}</td>
+    <td>{{ post.subcategory }}</td>
+  </tr>
   {% endfor %}
- {% endcache %} 
+
+</table>
+{% endcache %} 
   
 
 {% endblock %} 
