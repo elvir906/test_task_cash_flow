@@ -1,13 +1,14 @@
 from django.contrib import admin
+from django_mptt_admin.admin import DjangoMpttAdmin
+
 from .models import (Post,
                      Status,
                      FlowType,
-                     Category,
-                     SubCategory)
+                     Category)
 
 
 class PostAdmin(admin.ModelAdmin):
-  list_display = ['pub_date', 'status', 'flow_type', 'category', 'subcategory', 'amount']
+  list_display = ['pub_date', 'status', 'flow_type', 'category', 'amount']
 
 
 class StatusAdmin(admin.ModelAdmin):
@@ -17,15 +18,16 @@ class StatusAdmin(admin.ModelAdmin):
 class TypeAdmin(admin.ModelAdmin):
   list_display = ['value']
 
-class CategoryAdmin(admin.ModelAdmin):
-  list_display = ['value']
+class CategoryAdmin(DjangoMpttAdmin):
+    prepopulated_fields = {"slug": ("value",)}
+  # list_display = ['value']
 
-class SubCategoryAdmin(admin.ModelAdmin):
-  list_display = ['value']
+# class SubCategoryAdmin(admin.ModelAdmin):
+#   list_display = ['value']
 
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(FlowType, TypeAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(SubCategory, SubCategoryAdmin)
+# admin.site.register(SubCategory, SubCategoryAdmin)

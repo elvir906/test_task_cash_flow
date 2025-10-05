@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'sorl.thumbnail',
     'mptt',
+    'django_mptt_admin',
 ]
 
 MIDDLEWARE = [
@@ -30,8 +31,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-# print('Базовая папка', BASE_DIR)
 
 ROOT_URLCONF = 'cashflow.urls'
 

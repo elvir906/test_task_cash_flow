@@ -16,7 +16,7 @@ def index(request):
         'status_title' : Post.status_verbose_name_title,
         'flow_type_title': Post.flow_type_verbose_name_title,
         'category_title': Post.category_verbose_name_title,
-        'subcategory_title': Post.subcategory_verbose_name_title,
+        # 'subcategory_title': Post.subcategory_verbose_name_title,
         # 'index': True,
     }
     return render(request, 'index.html', context)

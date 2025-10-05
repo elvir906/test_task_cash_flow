@@ -5,7 +5,6 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 register = template.Library()
 
-
 class Status(models.Model):
   class Choice_list(models.TextChoices):
     B = ('Бизнес', 'Бизнес')
@@ -55,7 +54,11 @@ class Category(MPTTModel):
   class Choice_list(models.TextChoices):
     I = ('Инфраструктура', 'Инфраструктура')
     M = ('Маркетинг', 'Маркетинг')
-  
+    S1 = ('VPS', 'VPS')
+    S2 = ('Proxy', 'Proxy')
+    S3 = ('Farpost', 'Farpost')
+    S4 = ('Avito', 'Avito')
+
   value = models.CharField(
     choices=Choice_list.choices,
     editable=True,
@@ -66,14 +69,21 @@ class Category(MPTTModel):
   )
 
   parent = TreeForeignKey(
-        'self',
-        blank=True,
-        null=True,
-        related_name='child',
-        on_delete=models.CASCADE
+    'self',
+    blank=True,
+    null=True,
+    related_name='children',
+    on_delete=models.PROTECT,
+    db_index=True
   )
 
+  slug = models.SlugField()
+
+  class MPTTMeta:
+        order_insertion_by = ['value']
+
   class Meta:
+    unique_together = [['parent', 'slug']]
     verbose_name = 'Категория'
     verbose_name_plural = 'Категории'
 
@@ -81,32 +91,41 @@ class Category(MPTTModel):
     return self.value
 
 
-class SubCategory(models.Model):
-  class Choice_list(models.TextChoices):
-    S1 = ('VPS', 'Proxy')
-    S2 = ('Farpost', 'Avito')
-  
-  value = models.CharField(
-    choices=Choice_list.choices,
-    editable=True,
-    max_length=100,
-    unique=True,
-    null=False,
-    verbose_name='Подкатегория'
-  )
+# class SubCategory(models.Model):
+#     class Choice_list(models.TextChoices):
+#       S1 = ('VPS', 'VPS')
+#       S2 = ('Proxy', 'Proxy')
+#       S3 = ('Farpost', 'Farpost')
+#       S4 = ('Avito', 'Avito')
+    
+#     value = models.CharField(
+#       choices=Choice_list.choices,
+#       editable=True,
+#       max_length=100,
+#       unique=True,
+#       null=False,
+#       verbose_name='Подкатегория'
+#     )
 
-  category  = models.ForeignKey(
-    'Category',
-    related_name="categories",
-    on_delete=models.CASCADE
-  )
+#     category = TreeForeignKey(
+#       Category,
+#       blank=True,
+#       null=True,
+#       related_name='child_subcategory',
+#       on_delete=models.CASCADE
+#     )
+  # category  = models.ForeignKey(
+  #   'Category',
+  #   related_name="categories",
+  #   on_delete=models.CASCADE
+  # )
 
-  class Meta:
-    verbose_name = 'Подкатегория'
-    verbose_name_plural = 'Подкатегории'
+    # class Meta:
+    #     verbose_name = 'Подкатегория'
+    #     verbose_name_plural = 'Подкатегории'
 
-  def __str__(self) -> str:
-    return self.value
+    # def __str__(self):
+    #     return self.value
 
 
 class Post(models.Model):
@@ -146,7 +165,7 @@ class Post(models.Model):
     verbose_name=category_verbose_name_title
   )
   subcategory = models.ForeignKey(
-    SubCategory,
+    Category,
     related_name='post_subcategory',
     on_delete=models.CASCADE,
     null=False,
