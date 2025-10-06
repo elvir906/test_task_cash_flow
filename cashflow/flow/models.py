@@ -5,14 +5,9 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 register = template.Library()
 
-class Status(models.Model):
-  class Choice_list(models.TextChoices):
-    B = ('Бизнес', 'Бизнес')
-    P = ('Личное', 'Личное')
-    T = ('Налоги', 'Налоги')
 
+class Status(models.Model):
   value = models.CharField(
-    choices=Choice_list.choices,
     editable=True,
     max_length=100,
     unique=True,
@@ -29,12 +24,7 @@ class Status(models.Model):
 
 
 class FlowType(models.Model):
-  class Choice_list(models.TextChoices):
-    DEPO = ('Пополнение', 'Пополнение')
-    DEBT = ('Списание', 'Списание')
-
   value = models.CharField(
-    choices=Choice_list.choices,
     editable=True,
     max_length=100,
     unique=True,
@@ -51,16 +41,7 @@ class FlowType(models.Model):
 
 
 class Category(MPTTModel):
-  class Choice_list(models.TextChoices):
-    I = ('Инфраструктура', 'Инфраструктура')
-    M = ('Маркетинг', 'Маркетинг')
-    S1 = ('VPS', 'VPS')
-    S2 = ('Proxy', 'Proxy')
-    S3 = ('Farpost', 'Farpost')
-    S4 = ('Avito', 'Avito')
-
   value = models.CharField(
-    choices=Choice_list.choices,
     editable=True,
     max_length=100,
     unique=True,
@@ -89,43 +70,6 @@ class Category(MPTTModel):
 
   def __str__(self) -> str:
     return self.value
-
-
-# class SubCategory(models.Model):
-#     class Choice_list(models.TextChoices):
-#       S1 = ('VPS', 'VPS')
-#       S2 = ('Proxy', 'Proxy')
-#       S3 = ('Farpost', 'Farpost')
-#       S4 = ('Avito', 'Avito')
-    
-#     value = models.CharField(
-#       choices=Choice_list.choices,
-#       editable=True,
-#       max_length=100,
-#       unique=True,
-#       null=False,
-#       verbose_name='Подкатегория'
-#     )
-
-#     category = TreeForeignKey(
-#       Category,
-#       blank=True,
-#       null=True,
-#       related_name='child_subcategory',
-#       on_delete=models.CASCADE
-#     )
-  # category  = models.ForeignKey(
-  #   'Category',
-  #   related_name="categories",
-  #   on_delete=models.CASCADE
-  # )
-
-    # class Meta:
-    #     verbose_name = 'Подкатегория'
-    #     verbose_name_plural = 'Подкатегории'
-
-    # def __str__(self):
-    #     return self.value
 
 
 class Post(models.Model):
@@ -158,6 +102,7 @@ class Post(models.Model):
   )
   category = models.ForeignKey(
     Category,
+
     related_name='post_category',
     on_delete=models.CASCADE,
     null=False,
