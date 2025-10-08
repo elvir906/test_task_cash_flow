@@ -4,6 +4,5 @@
     {"name": "VPS",            "level": 2, "parent": "Инфраструктура"},
     {"name": "Proxy",          "level": 2, "parent": "Инфраструктура"},
     {"name": "Avito",          "level": 2, "parent": "Маркетинг"},
-    {"name": "Farpost",        "level": 2, "parent": "Маркетинг"},
-    {"name": "Farpost2",        "level": 3, "parent": "Farpost"}
+    {"name": "Farpost",        "level": 2, "parent": "Маркетинг"}
 ]
