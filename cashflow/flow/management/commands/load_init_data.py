@@ -52,7 +52,7 @@ class Command(BaseCommand):
                                         value=item["name"],
                                         level=item["level"]
                                     )
-                                elif item["level"] == 2:
+                                elif item["level"] >= 2:
                                     modelname.objects.create(
                                         value=item["name"],
                                         level=item["level"],
