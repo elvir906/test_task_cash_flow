@@ -39,7 +39,7 @@ class FlowType(models.Model):
         verbose_name_plural = 'Типы'
         ordering = ['value',]
     
-    def __str__(self) -> str:
+    def __str__(self):
         return self.value
 
 
@@ -76,7 +76,7 @@ class Category(MPTTModel):
         #   )
         # ]
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.value
 
 
@@ -131,11 +131,15 @@ class Post(models.Model):
         decimal_places=2,
         blank=False
     )
+    comment = models.TextField(
+        max_length=906,
+        blank=True
+    )
 
     class Meta:
         verbose_name = 'Запись о ДДС'
         verbose_name_plural = 'Записи о ДДС'
         ordering = ['pub_date']
-      
+
     def __str__(self) -> str:
         return self.status.value
