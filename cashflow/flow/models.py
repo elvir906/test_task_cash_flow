@@ -1,8 +1,8 @@
 from django.db import models
-from django.db.models import UniqueConstraint
+# from django.db.models import UniqueConstraint
 from django.contrib.auth.models import User
 
-from mptt.models import MPTTModel, TreeForeignKey
+# from mptt.models import MPTTModel, TreeForeignKey
 
 
 class Status(models.Model):
@@ -43,7 +43,7 @@ class FlowType(models.Model):
         return self.value
 
 
-class Category(MPTTModel):
+class Category(models.Model):
     """Модель для таблицы 'Категория'"""
 
     value = models.CharField(
@@ -53,16 +53,16 @@ class Category(MPTTModel):
         verbose_name='Категория'
     )
 
-    parent = TreeForeignKey(
-        'self',
-        blank=True,
-        null=True,
-        related_name='children',
-        on_delete=models.PROTECT,
-    )
+    # parent = TreeForeignKey(
+    #     'self',
+    #     blank=True,
+    #     null=True,
+    #     related_name='children',
+    #     on_delete=models.PROTECT,
+    # )
 
-    class MPTTMeta:
-        order_insertion_by = ['value']
+    # class MPTTMeta:
+    #     order_insertion_by = ['value']
           
 
     class Meta:
@@ -75,6 +75,31 @@ class Category(MPTTModel):
         #     include=["full_name"]
         #   )
         # ]
+
+    def __str__(self):
+        return self.value
+
+class Subcategory(models.Model):
+    """Модель для таблицы Подкатегории"""
+
+    value = models.CharField(
+        max_length=100,
+        blank=False,
+        unique=True,
+        verbose_name="Подкатегория"
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        blank=False,
+        related_name='category_subcategory',
+        verbose_name='Связная категория'
+    )
+
+    class Meta:
+        verbose_name = 'Подкатегория'
+        verbose_name_plural = 'Пождкатегории'
+        ordering = ['value', 'category']
 
     def __str__(self):
         return self.value
@@ -120,7 +145,7 @@ class Post(models.Model):
         verbose_name=category_verbose_name_title
     )
     subcategory = models.ForeignKey(
-        Category,
+        Subcategory,
         related_name='post_subcategory',
         on_delete=models.CASCADE,
         blank=False,
@@ -129,11 +154,13 @@ class Post(models.Model):
     amount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        blank=False
+        blank=False,
+        verbose_name='Сумма'
     )
     comment = models.TextField(
         max_length=906,
-        blank=True
+        blank=True,
+        verbose_name='Комментарий (необязательно)'
     )
 
     class Meta:

@@ -8,7 +8,7 @@ from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 
 
-from flow.models import Category, Status, FlowType
+from flow.models import Category, Status, FlowType, Subcategory
 
 DATA_ROOT = os.path.join(settings.BASE_DIR, 'flow/data')
 
@@ -47,19 +47,14 @@ class Command(BaseCommand):
                         print(item)
                         try:
                             if model == 'Category':
-                                if item["level"] == 1:
+                                if item["parent"] == "":
                                     modelname.objects.create(
-                                        value=item["name"],
-                                        level=item["level"]
+                                        value=item["name"]
                                     )
-                                elif item["level"] >= 2:
-                                    modelname.objects.create(
+                                elif item["parent"] != "":
+                                    Subcategory.objects.create(
                                         value=item["name"],
-                                        level=item["level"],
-                                        parent=get_object_or_404(
-                                            Category,
-                                            value=item["parent"]
-                                        )
+                                        category = get_object_or_404(Category, value=item["parent"])
                                     )
                             else:
                                 modelname.objects.create(value=item["name"])

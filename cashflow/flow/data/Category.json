@@ -1,8 +1,8 @@
 [
-    {"name": "Инфраструктура", "level": 1},
-    {"name": "Маркетинг",      "level": 1},
-    {"name": "VPS",            "level": 2, "parent": "Инфраструктура"},
-    {"name": "Proxy",          "level": 2, "parent": "Инфраструктура"},
-    {"name": "Avito",          "level": 2, "parent": "Маркетинг"},
-    {"name": "Farpost",        "level": 2, "parent": "Маркетинг"}
+    {"name": "Инфраструктура", "parent": ""},
+    {"name": "Маркетинг",      "parent": ""},
+    {"name": "VPS",            "parent": "Инфраструктура"},
+    {"name": "Proxy",          "parent": "Инфраструктура"},
+    {"name": "Avito",          "parent": "Маркетинг"},
+    {"name": "Farpost",        "parent": "Маркетинг"}
 ]
