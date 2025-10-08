@@ -8,7 +8,9 @@ from .models import (Post,
 
 
 class PostAdmin(admin.ModelAdmin):
-  list_display = ['pub_date', 'status', 'flow_type', 'category', 'amount']
+  list_display = [
+    'pub_date', 'user', 'status', 'flow_type', 'category', 'amount'
+  ]
 
 
 class StatusAdmin(admin.ModelAdmin):
@@ -19,15 +21,10 @@ class TypeAdmin(admin.ModelAdmin):
   list_display = ['value']
 
 class CategoryAdmin(DjangoMpttAdmin):
-    prepopulated_fields = {"slug": ("value",)}
-  # list_display = ['value']
-
-# class SubCategoryAdmin(admin.ModelAdmin):
-#   list_display = ['value']
+  list_display = ['value']
 
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(FlowType, TypeAdmin)
 admin.site.register(Category, CategoryAdmin)
-# admin.site.register(SubCategory, SubCategoryAdmin)

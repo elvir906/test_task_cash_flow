@@ -2,7 +2,7 @@
     {"name": "Инфраструктура", "level": 1} ,
     {"name": "Маркетинг",      "level": 1},
     {"name": "VPS",            "level": 2, "parent": "Инфраструктура"},
-    {"name": "Proxy",          "level": 3, "parent": "Инфраструктура"},
+    {"name": "Proxy",          "level": 2, "parent": "Инфраструктура"},
     {"name": "Avito",          "level": 2, "parent": "Маркетинг"},
-    {"name": "Farpost",        "level": 3, "parent": "Маркетинг"}
+    {"name": "Farpost",        "level": 2, "parent": "Маркетинг"}
 ]
