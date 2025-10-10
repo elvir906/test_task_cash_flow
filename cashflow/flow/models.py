@@ -1,8 +1,6 @@
 from django.db import models
-# from django.db.models import UniqueConstraint
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-
-# from mptt.models import MPTTModel, TreeForeignKey
 
 
 class Status(models.Model):
@@ -24,7 +22,7 @@ class Status(models.Model):
         return self.value
 
 
-class FlowType(models.Model):
+class Type(models.Model):
     """Модель для таблицы 'Тип'"""
 
     value = models.CharField(
@@ -52,29 +50,13 @@ class Category(models.Model):
         unique=True,
         verbose_name='Категория'
     )
-
-    # parent = TreeForeignKey(
-    #     'self',
-    #     blank=True,
-    #     null=True,
-    #     related_name='children',
-    #     on_delete=models.PROTECT,
-    # )
-
-    # class MPTTMeta:
-    #     order_insertion_by = ['value']
-          
+    type = models.ForeignKey(
+        Type, on_delete=models.CASCADE, related_name="categories_type", verbose_name="Тип"
+    )
 
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
-        # constraints = [
-        #   models.UniqueConstraint(
-        #     name="unique_category",
-        #     # fields=["room", "date"],
-        #     include=["full_name"]
-        #   )
-        # ]
 
     def __str__(self):
         return self.value
@@ -107,10 +89,13 @@ class Subcategory(models.Model):
 
 class Post(models.Model):
     pub_date_verbose_name_title = 'Дата создания записи'
+    user_verbose_name_title = "Пользователь"
     status_verbose_name_title = 'Статус'
     flow_type_verbose_name_title = 'Тип'
     category_verbose_name_title = 'Категория'
     subcategory_verbose_name_title = 'Подкатегория'
+    amount_verbose_name_title = 'Сумма'
+    comment_verbose_name_title = 'Комментарий'
 
     pub_date = models.DateField(
         auto_now_add=True,
@@ -122,7 +107,7 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         blank=False,
         related_name='user_post',
-        verbose_name='Пользователь'
+        verbose_name=user_verbose_name_title
     )
     status = models.ForeignKey(
         Status,
@@ -130,8 +115,8 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         verbose_name=status_verbose_name_title
     )
-    flow_type = models.ForeignKey(
-        FlowType,
+    type = models.ForeignKey(
+        Type,
         related_name='post_flow_type',
         on_delete=models.CASCADE,
         blank=False,
@@ -155,12 +140,12 @@ class Post(models.Model):
         max_digits=10,
         decimal_places=2,
         blank=False,
-        verbose_name='Сумма'
+        verbose_name=amount_verbose_name_title
     )
     comment = models.TextField(
         max_length=906,
         blank=True,
-        verbose_name='Комментарий (необязательно)'
+        verbose_name=comment_verbose_name_title + ' (необязательно)'
     )
 
     class Meta:
@@ -170,3 +155,14 @@ class Post(models.Model):
 
     def __str__(self) -> str:
         return self.status.value
+    
+    def clean(self):
+        # Проверка соответсвия категории и подкатегории
+        if self.subcategory and self.subcategory.category != self.category:
+            raise ValidationError(
+                "Подкатегория не соответствует выбранной категории"
+            )
+        # Проверка соответсвия категории и типа
+        if self.category and self.category.type != self.type:
+            raise ValidationError("Категория не соответствует выбранному типу")
+

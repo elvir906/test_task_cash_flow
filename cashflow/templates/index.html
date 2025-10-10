@@ -8,20 +8,26 @@
 
 <table>
   <tr style="background-color:darkgray">
-    <td>{{ pub_date_title }}</td>
-    <td>{{ status_title }}</td>
-    <td>{{ flow_type_title }}</td>
-    <td>{{ category_title }}</td>
-    <td>{{ subcategory_title }}</td>
+    <td>{{ pub_date_field_title }}</td>
+    <td>{{ user_field_title }}</td>
+    <td>{{ status_field_title }}</td>
+    <td>{{ type_field_title }}</td>
+    <td>{{ category_field_title }}</td>
+    <td>{{ subcategory_field_title }}</td>
+    <td>{{ amount_field_title }}</td>
+    <td>{{ comment_field_title }}</td>
   </tr>
 
   {% for post in page_obj %} 
   <tr>
     <td>{{ post.pub_date|date:"d.m.Y" }}</td>
+    <td>{{ post.user }}</td>
     <td>{{ post.status }}</td>
-    <td>{{ post.flow_type }}</td>
+    <td>{{ post.type }}</td>
     <td>{{ post.category }}</td>
     <td>{{ post.subcategory }}</td>
+    <td>{{ post.amount }}</td>
+    <td>{{ post.comment }}</td>
   </tr>
   {% endfor %}
 

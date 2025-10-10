@@ -54,7 +54,9 @@ class Command(BaseCommand):
                                 elif item["parent"] != "":
                                     Subcategory.objects.create(
                                         value=item["name"],
-                                        category = get_object_or_404(Category, value=item["parent"])
+                                        category = get_object_or_404(
+                                            Category, value=item["parent"]
+                                        )
                                     )
                             else:
                                 modelname.objects.create(value=item["name"])

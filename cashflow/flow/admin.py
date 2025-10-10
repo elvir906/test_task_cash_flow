@@ -2,13 +2,13 @@ from django.contrib import admin
 # from django_mptt_admin.admin import DjangoMpttAdmin
 
 from .models import (
-    Post, Status, FlowType, Category, Subcategory
+    Post, Status, Type, Category, Subcategory
 )
 
 
 class PostAdmin(admin.ModelAdmin):
     list_display = [
-      'pub_date', 'user', 'status', 'flow_type',
+      'pub_date', 'user', 'status', 'type',
       'category', 'amount', 'comment',
   ]
 
@@ -29,6 +29,6 @@ class SubcategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Status, StatusAdmin)
-admin.site.register(FlowType, TypeAdmin)
+admin.site.register(Type, TypeAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Subcategory, SubcategoryAdmin)
